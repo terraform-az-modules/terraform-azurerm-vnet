@@ -11,7 +11,7 @@ name : Terraform Azure VNet
 license: "APACHE"
 
 # Canonical GitHub repo
-github_repo: terraform-az-modules/terraform-azure-vnet
+github_repo: terraform-az-modules/terraform-azurerm-vnet
 
 # Badges to display
 badges:
