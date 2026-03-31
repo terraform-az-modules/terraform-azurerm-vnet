@@ -40,9 +40,9 @@ resource "azurerm_virtual_network" "vnet" {
   # }
 
     dynamic "encryption" {
-     for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
-     content {
-         enforcement = encryption.value  
+      for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
+      content {
+        enforcement = encryption.value  
       }
     }
 

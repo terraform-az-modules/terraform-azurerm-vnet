@@ -97,13 +97,6 @@ variable "address_spaces" {
   default     = []
   description = "The list of the address spaces that is used by the virtual network."
 
-  #Added the validation for address_spaces
-  validation {
-    condition     = length(var.address_spaces) > 0
-    error_message = "At least one address space must be provided."
-  }
-  
-
 }
 
 variable "flow_timeout_in_minutes" {
@@ -113,7 +106,7 @@ variable "flow_timeout_in_minutes" {
   
   #Added the validation for the flow_timeout_in_minutes
   validation {
-    condition     = var.flow_timeout_in_minutes == null ||var.flow_timeout_in_minutes >= 4 && var.flow_timeout_in_minutes <= 30
+    condition     = var.flow_timeout_in_minutes == null || var.flow_timeout_in_minutes >= 4 && var.flow_timeout_in_minutes <= 30
     error_message = "flow_timeout_in_minutes must be between 4 and 30."
   }
 

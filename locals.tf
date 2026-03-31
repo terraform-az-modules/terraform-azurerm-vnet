@@ -13,6 +13,6 @@ locals {
 
   create_ddos_plan = var.enable_ddos_pp && var.enable && var.existing_ddos_pp == null
   name             = var.custom_name != null ? var.custom_name : module.labels.id
-  vnet_name = var.resource_position_prefix  ? "vnet-${local.name}" : "${local.name}-vnet"
+  vnet_name = var.resource_position_prefix ? "vnet-${local.name}" : "${local.name}-vnet"
   ddos_name = var.resource_position_prefix ? "ddospp-${local.name}" : "${local.name}-ddospp"
 }
