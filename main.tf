@@ -14,12 +14,15 @@ module "labels" {
   extra_tags      = var.extra_tags
 }
 
+
+
 ##-----------------------------------------------------------------------------
 ## Virtual Network – Creates a VNet with optional DNS, BGP, and DDoS settings
 ##-----------------------------------------------------------------------------
 resource "azurerm_virtual_network" "vnet" {
   count                   = var.enable ? 1 : 0
-  name                    = var.resource_position_prefix ? format("vnet-%s", local.name) : format("%s-vnet", local.name)
+  #name                    = var.resource_position_prefix ? format("vnet-%s", local.name) : format("%s-vnet", local.name)
+  name                    = local.vnet_name
   resource_group_name     = var.resource_group_name
   address_space           = var.address_spaces
   flow_timeout_in_minutes = var.flow_timeout_in_minutes
@@ -29,12 +32,20 @@ resource "azurerm_virtual_network" "vnet" {
   edge_zone               = var.edge_zone
   tags                    = module.labels.tags
 
-  dynamic "encryption" {
-    for_each = var.enable_encryption_settings != null ? [1] : []
-    content {
-      enforcement = var.enable_encryption_settings
+  # dynamic "encryption" {
+  #   for_each = var.enable_encryption_settings != null ? [1] : []
+  #   content {
+  #     enforcement = var.enable_encryption_settings
+  #   }
+  # }
+
+    dynamic "encryption" {
+     for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
+     content {
+         enforcement = encryption.value  
+      }
     }
-  }
+
 
   dynamic "ddos_protection_plan" {
     for_each = local.ddos_pp_id != null ? [1] : []
@@ -43,6 +54,8 @@ resource "azurerm_virtual_network" "vnet" {
       enable = true
     }
   }
+
+
 }
 
 ##-----------------------------------------------------------------------------
@@ -50,10 +63,12 @@ resource "azurerm_virtual_network" "vnet" {
 ##-----------------------------------------------------------------------------
 resource "azurerm_network_ddos_protection_plan" "ddos_protection_plan" {
   count               = local.create_ddos_plan ? 1 : 0 # Updated: Only create new DDOS Plan if existing one not provided
-  name                = var.resource_position_prefix ? format("ddospp-%s", local.name) : format("%s-ddospp", local.name)
+  #name                = var.resource_position_prefix ? format("ddospp-%s", local.name) : format("%s-ddospp", local.name)
+  name                = local.ddos_name
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.labels.tags
+
 
   lifecycle {
     prevent_destroy = false
