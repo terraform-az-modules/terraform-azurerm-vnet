@@ -32,13 +32,6 @@ resource "azurerm_virtual_network" "vnet" {
   edge_zone               = var.edge_zone
   tags                    = module.labels.tags
 
-  # dynamic "encryption" {
-  #   for_each = var.enable_encryption_settings != null ? [1] : []
-  #   content {
-  #     enforcement = var.enable_encryption_settings
-  #   }
-  # }
-
   dynamic "encryption" {
     for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
     content {
