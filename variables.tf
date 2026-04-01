@@ -31,7 +31,7 @@ variable "name" {
 
 variable "location" {
   type        = string
-  default     = null
+  default     = "Central India"
   description = "The location/region where the virtual network is created. Changing this forces a new resource to be created."
 }
 
@@ -92,14 +92,14 @@ variable "resource_group_name" {
   description = "The name of the resource group in which to create the virtual network. Changing this forces a new resource to be created."
 }
 
-variable "address_spaces" {
+variable "address_space" {
   type        = list(string)
-  default     = []
+  default     = ["10.0.0.0/16"]
   description = "The list of the address spaces that is used by the virtual network."
 }
 
 variable "flow_timeout_in_minutes" {
-  type        = number
+  type        = string
   default     = null
   description = "The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes."
 }
@@ -158,3 +158,16 @@ variable "enable_network_watcher" {
 }
 
 
+variable "vnets" {
+  type = map(object({
+  name = string
+  resource_group_name = string
+  address_space = list(string)
+  flow_timeout_in_minutes = optional(number)
+  location = string
+  dns_servers = optional(list(string))
+  bgp_community = optional(string)
+  edge_zone = optional(string)
+  tags = optional(map(string))
+}))
+}

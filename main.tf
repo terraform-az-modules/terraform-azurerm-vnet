@@ -23,8 +23,8 @@ resource "azurerm_virtual_network" "vnet" {
   count = var.enable ? 1 : 0
   #name                    = var.resource_position_prefix ? format("vnet-%s", local.name) : format("%s-vnet", local.name)
   name                    = local.vnet_name
-  resource_group_name     = var.resource_group_name
-  address_space           = var.address_spaces
+  resource_group_name     = var.name
+  address_space           = var.address_space
   flow_timeout_in_minutes = var.flow_timeout_in_minutes
   location                = var.location
   dns_servers             = var.dns_servers
