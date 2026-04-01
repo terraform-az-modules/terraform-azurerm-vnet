@@ -29,7 +29,7 @@ module "vnet" {
       resource_group_name     = module.resource_group.resource_group_name
       location                = module.resource_group.resource_group_location
       address_space           = ["10.0.0.0/16"]
-      flow_timeout_in_minutes = "30"
+      flow_timeout_in_minutes = 30
       dns_servers             = ["8.8.8.8", "8.8.4.4"]
       bgp_community           = "65000:1"
       edge_zone               = "centralus"

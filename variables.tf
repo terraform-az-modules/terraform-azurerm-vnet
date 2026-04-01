@@ -25,7 +25,6 @@ EOT
 ##-----------------------------------------------------------------------------
 variable "name" {
   type        = string
-  default     = null
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
@@ -37,7 +36,7 @@ variable "location" {
 
 variable "environment" {
   type        = string
-  default     = null
+  default     = "dev"
   description = "Environment (e.g. `prod`, `dev`, `staging`)."
 }
 
