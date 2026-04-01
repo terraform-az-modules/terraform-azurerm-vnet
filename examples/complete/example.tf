@@ -19,7 +19,7 @@ module "resource_group" {
 ## Virtual Network module call.
 ##-----------------------------------------------------------------------------
 module "vnet" {
-  source = "../../"
+  source      = "../../"
   enable      = true
   name        = "core"
   environment = "dev"
