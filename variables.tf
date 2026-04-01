@@ -160,14 +160,14 @@ variable "enable_network_watcher" {
 
 variable "vnets" {
   type = map(object({
-  name = string
-  resource_group_name = string
-  address_space = list(string)
-  flow_timeout_in_minutes = optional(number)
-  location = string
-  dns_servers = optional(list(string))
-  bgp_community = optional(string)
-  edge_zone = optional(string)
-  tags = optional(map(string))
-}))
+    name                    = string
+    resource_group_name     = string
+    address_space           = list(string)
+    flow_timeout_in_minutes = optional(number)
+    location                = string
+    dns_servers             = optional(list(string))
+    bgp_community           = optional(string)
+    edge_zone               = optional(string)
+    tags                    = optional(map(string))
+  }))
 }
