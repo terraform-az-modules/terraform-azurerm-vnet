@@ -24,7 +24,7 @@ resource "azurerm_virtual_network" "vnet" {
   address_space           = var.address_spaces
   flow_timeout_in_minutes = var.flow_timeout_in_minutes
   location                = var.location
-  dns_servers             = var.dns_servers
+  dns_servers             = var.dns_servers != null ? var.dns_servers : []
   bgp_community           = var.bgp_community
   edge_zone               = var.edge_zone
   tags                    = module.labels.tags
@@ -32,7 +32,7 @@ resource "azurerm_virtual_network" "vnet" {
   dynamic "encryption" {
     for_each = local.encryption_enabled ? [var.enable_encryption_settings] : []
     content {
-      enforcement = var.enable_encryption_settings
+      enforcement = "AllowUnencrypted"
     }
   }
 
