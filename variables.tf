@@ -97,10 +97,6 @@ variable "address_spaces" {
   type        = list(string)
   default     = []
   description = "The list of the address spaces that is used by the virtual network."
-  validation {
-    condition     = length(var.address_spaces) > 0
-    error_message = "At least one address space must be provided."
-  }
 }
 
 variable "flow_timeout_in_minutes" {

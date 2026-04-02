@@ -18,7 +18,7 @@ module "labels" {
 ## Virtual Network – Creates a VNet with optional DNS, BGP, and DDoS settings
 ##-----------------------------------------------------------------------------
 resource "azurerm_virtual_network" "vnet" {
-  count                   = local.create_vnet ? 1 : 0
+  count                   = var.enable ? 1 : 0
   name                    = local.vnet_name
   resource_group_name     = var.resource_group_name
   address_space           = var.address_spaces
@@ -30,9 +30,9 @@ resource "azurerm_virtual_network" "vnet" {
   tags                    = module.labels.tags
 
   dynamic "encryption" {
-    for_each = local.encryption_enabled ? [var.enable_encryption_settings] : []
+    for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
     content {
-      enforcement = "AllowUnencrypted"
+      enforcement = var.enable_encryption_settings
     }
   }
 
@@ -66,8 +66,8 @@ resource "azurerm_network_ddos_protection_plan" "ddos_protection_plan" {
 ## Azure automatically enables Network Watcher, but this allows specifying a custom name.
 ##-----------------------------------------------------------------------------
 resource "azurerm_network_watcher" "flow_log_nw" {
-  count               = local.create_network_watcher ? 1 : 0
-  name                = local.nw_name
+  count               = var.enable && var.enable_network_watcher ? 1 : 0
+  name                = local.network_watcher_name
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.labels.tags

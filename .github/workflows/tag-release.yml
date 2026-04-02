@@ -6,8 +6,10 @@ on:
 
 jobs:
   release:
-    uses: clouddrove/github-shared-workflows/.github/workflows/tag-release.yml@master
+    uses: clouddrove/github-shared-workflows/.github/workflows/release-tag.yml@v2
     with:
       target_branch: master
+      tag_format: "vX.Y.Z"  # or "X.Y.Z" depending on your preference
+
     secrets:
       GITHUB: ${{ secrets.GITHUB_TOKEN }}
