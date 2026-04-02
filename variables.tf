@@ -1,3 +1,4 @@
+
 ##-----------------------------------------------------------------------------
 ## Naming convention
 ##-----------------------------------------------------------------------------
@@ -25,18 +26,19 @@ EOT
 ##-----------------------------------------------------------------------------
 variable "name" {
   type        = string
+  default     = null
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
 variable "location" {
   type        = string
-  default     = "Central India"
+  default     = null
   description = "The location/region where the virtual network is created. Changing this forces a new resource to be created."
 }
 
 variable "environment" {
   type        = string
-  default     = "dev"
+  default     = null
   description = "Environment (e.g. `prod`, `dev`, `staging`)."
 }
 
@@ -91,14 +93,14 @@ variable "resource_group_name" {
   description = "The name of the resource group in which to create the virtual network. Changing this forces a new resource to be created."
 }
 
-variable "address_space" {
+variable "address_spaces" {
   type        = list(string)
-  default     = ["10.0.0.0/16"]
+  default     = []
   description = "The list of the address spaces that is used by the virtual network."
 }
 
 variable "flow_timeout_in_minutes" {
-  type        = string
+  type        = number
   default     = null
   description = "The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes."
 }
@@ -146,7 +148,6 @@ variable "existing_ddos_pp" {
     error_message = "You cannot set both 'enable_ddos_pp = true' and 'existing_ddos_pp' at the same time. Provide only one."
   }
 }
-
 ##-----------------------------------------------------------------------------
 ## Network Watcher
 ##-----------------------------------------------------------------------------
@@ -157,16 +158,3 @@ variable "enable_network_watcher" {
 }
 
 
-variable "vnets" {
-  type = map(object({
-    name                    = string
-    resource_group_name     = string
-    address_space           = list(string)
-    flow_timeout_in_minutes = optional(number)
-    location                = string
-    dns_servers             = optional(list(string))
-    bgp_community           = optional(string)
-    edge_zone               = optional(string)
-    tags                    = optional(map(string))
-  }))
-}

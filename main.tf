@@ -14,17 +14,14 @@ module "labels" {
   extra_tags      = var.extra_tags
 }
 
-
-
 ##-----------------------------------------------------------------------------
 ## Virtual Network – Creates a VNet with optional DNS, BGP, and DDoS settings
 ##-----------------------------------------------------------------------------
 resource "azurerm_virtual_network" "vnet" {
-  count = var.enable ? 1 : 0
-  #name                    = var.resource_position_prefix ? format("vnet-%s", local.name) : format("%s-vnet", local.name)
+  count                   = local.create_vnet ? 1 : 0
   name                    = local.vnet_name
-  resource_group_name     = var.name
-  address_space           = var.address_space
+  resource_group_name     = var.resource_group_name
+  address_space           = var.address_spaces
   flow_timeout_in_minutes = var.flow_timeout_in_minutes
   location                = var.location
   dns_servers             = var.dns_servers
@@ -33,35 +30,30 @@ resource "azurerm_virtual_network" "vnet" {
   tags                    = module.labels.tags
 
   dynamic "encryption" {
-    for_each = var.enable_encryption_settings != null ? [var.enable_encryption_settings] : []
+    for_each = local.encryption_enabled ? [var.enable_encryption_settings] : []
     content {
-      enforcement = encryption.value
+      enforcement = var.enable_encryption_settings
     }
   }
 
-
   dynamic "ddos_protection_plan" {
-    for_each = local.ddos_pp_id != null ? [1] : []
+    for_each = local.ddos_pp_id != null ? [local.ddos_pp_id] : []
     content {
       id     = local.ddos_pp_id
       enable = true
     }
   }
-
-
 }
 
 ##-----------------------------------------------------------------------------
 ## DDoS Plan – Creates a new plan if one is not provided
 ##-----------------------------------------------------------------------------
 resource "azurerm_network_ddos_protection_plan" "ddos_protection_plan" {
-  count = local.create_ddos_plan ? 1 : 0 # Updated: Only create new DDOS Plan if existing one not provided
-  #name                = var.resource_position_prefix ? format("ddospp-%s", local.name) : format("%s-ddospp", local.name)
+  count               = local.create_ddos_plan ? 1 : 0 # Updated: Only create new DDOS Plan if existing one not provided
   name                = local.ddos_name
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.labels.tags
-
 
   lifecycle {
     prevent_destroy = false
@@ -74,8 +66,8 @@ resource "azurerm_network_ddos_protection_plan" "ddos_protection_plan" {
 ## Azure automatically enables Network Watcher, but this allows specifying a custom name.
 ##-----------------------------------------------------------------------------
 resource "azurerm_network_watcher" "flow_log_nw" {
-  count               = var.enable && var.enable_network_watcher ? 1 : 0
-  name                = var.resource_position_prefix ? format("nw-%s", local.name) : format("%s-nw", local.name)
+  count               = local.create_network_watcher ? 1 : 0
+  name                = local.nw_name
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.labels.tags
