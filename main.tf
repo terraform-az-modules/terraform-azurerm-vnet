@@ -66,7 +66,7 @@ resource "azurerm_network_ddos_protection_plan" "ddos_protection_plan" {
 ## Azure automatically enables Network Watcher, but this allows specifying a custom name.
 ##-----------------------------------------------------------------------------
 resource "azurerm_network_watcher" "flow_log_nw" {
-  count               = var.enable && var.enable_network_watcher ? 1 : 0
+  count               = local.create_network_watcher ? 1 : 0
   name                = local.network_watcher_name
   location            = var.location
   resource_group_name = var.resource_group_name

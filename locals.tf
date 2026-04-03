@@ -17,4 +17,7 @@ locals {
   ddos_pp_id = var.enable_ddos_pp ? (
     var.existing_ddos_pp != null ? var.existing_ddos_pp : azurerm_network_ddos_protection_plan.ddos_protection_plan[0].id
   ) : null
+  name = var.custom_name != null ? var.custom_name : module.labels.id
+
+
 }
