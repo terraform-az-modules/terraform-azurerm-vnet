@@ -1,9 +1,9 @@
 name: tf-checks
+
 on:
-  push:
-    branches: [ master ]
   pull_request:
   workflow_dispatch:
+
 jobs:
   complete-example:
     uses: clouddrove/github-shared-workflows/.github/workflows/stf-checks.yml@v2
