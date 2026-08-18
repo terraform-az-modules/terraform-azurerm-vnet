@@ -6,13 +6,13 @@ on:
 
 jobs:
   complete-example:
-    uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@v2
+    uses: clouddrove/github-shared-workflows/.github/workflows/smurf-tf-checks.yml@v2
     with:
       working_directory: './examples/complete/'
       provider: none
 
   vnet_with_existing_ddos_id-example:
-    uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@v2
+    uses: clouddrove/github-shared-workflows/.github/workflows/smurf-tf-checks.yml@v2
     with:
       working_directory: './examples/vnet_with_existing_ddos_id/'
       provider: none
